@@ -25,11 +25,13 @@
 #
 #
 # This scrpit can change the name of sepecified files, directories into lowercase, uppercase or optional with sd pattern. 
-# The user can choose recursion mode, which will change the name of current directory and whole files and subdirectories inside this folder.
+# The user can choose recursion mode, which will change the name of current directory and whole files and subdirectories 
+# inside this folder.
 #
 # Some scenarios can happen when the user run this script
 #
-# ----1.The script won't change anything of the name if the user want to change the name already is in "lowercase/uppercase" into "lowercase/uppercase"
+# ----1.The script won't change anything of the name if the user want to change the name already 
+# is in "lowercase/uppercase" into "lowercase/uppercase"
 # 
 # command:	./modify -l level11_file.py
 #
@@ -44,7 +46,8 @@
 # correct command:	./modify -r -u level1_dir/ another_level1_dir/
 # incorrect command:	./modify -r -u level11_file.py
 #
-# 	But the command still work if user put the previous input is names of directory. In that case, command will change name of directories and return a error when meet file name.
+# 	But the command still work if user put the previous input is names of directory. In that case, 
+#   command will change name of directories and return a error when meet file name.
 # 	command		./modify -r -u level1_dir/ another_level1_dir/	level11_file.py
 #
 #
@@ -59,7 +62,8 @@
 # result:	The script will change "level1_dir" into "level1_directory"
 #
 #
-# ----6.The command won't return anything if missing the control tags (-l, -u, -h or sed). Even use only -r, tag -r is an option, it will be used in case changing any files, folders in directory.
+# ----6.The command won't return anything if missing the control tags (-l, -u, -h or sed). Even use only -r, 
+# tag -r is an option, it will be used in case changing any files, folders in directory.
 #
 # command:	./modify level11_file.py
 # 		./modify -r level11_file.py
@@ -67,8 +71,10 @@
 # command:	./modify -h -u level11_file.py
 # result:	Show usage of the script and change name of level11_file.py into uppercase.
 #
-# ----7.The command will return an error message if there is something wrong in the input, for instance, files-directories doesn't exist, incorrect sed pattern.
+# ----7.The command will return an error message if there is something wrong in the input, for instance, 
+# files-directories doesn't exist, incorrect sed pattern, empty sed pattern.
 #
 # command:	./modify -u doesnt_exist.py doesnt_exist/
 # 		./modify sed incorrect_pattern level11_file.py
+#     ./modify sed '' level11_file.py
 #

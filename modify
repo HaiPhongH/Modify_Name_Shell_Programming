@@ -17,12 +17,14 @@ change_name(){
 				then
 					# change the filename into lowercase without changing extension
 					newfile=$(echo "${basename%.*}" | tr '[:upper:]' '[:lower:]')
+					
 					# move to the new file ignore the output.
 					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true	
 				elif test -d $1		# if this is a directory
 				then
 					# change the dirname into lowercase 
 					newdir=$(echo "$basename" | tr '[:upper:]' '[:lower:]')
+					
 					# move to the new directory ignore the output.
 					mv "$1" "$dirname/$newdir/" 2>/dev/null; true
 				fi
@@ -32,12 +34,14 @@ change_name(){
 				then
 					# change the filename into uppercase without changing extension 
 					newfile=$(echo "${basename%.*}" | tr '[:lower:]' '[:upper:]')
+					
 					# move to the new file ignore the output.
 					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true
 				elif test -d $1		# if this is a directory
 				then
 					# change the dirname into uppercase
 					newdir=$(echo "$basename" | tr '[:lower:]' '[:upper:]')
+					
 					# move to the new directory ignore the output.
 					mv "$1" "$dirname/$newdir/" 2>/dev/null; true
 				fi
@@ -45,22 +49,37 @@ change_name(){
 			sed)	# change name with sed
 				if test -f $1		# if this is a file
 				then
-					# change the filename using given sed pattern stored in $3
-					newfile=$(echo "${basename%.*}" | sed $3)
-					# move to the new file and ignore the output.
-					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true	
+					if test "x$3" != "x"
+					then
+						# change the filename using given sed pattern stored in $3
+						newfile=$(echo "${basename%.*}" | sed $3)
+					
+						# move to the new file and ignore the output.
+						mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true
+					else
+						echo "Missing sed pattern"
+						exit 1
+					fi	
 				elif test -d $1		# if this is a directory
 				then
-					# change the directory name using given sed pattern stored in $3
-					newdir=$(echo "$basename" | sed $3)
-					# move to the newdirectory and ignore the output.
-					mv "$1" "$dirname/$newdir/" 2>/dev/null; true
+					if test  "x$3" != "x"
+					then
+						# change the directory name using given sed pattern stored in $3
+						newdir=$(echo "$basename" | sed $3)
+					
+						# move to the newdirectory and ignore the output.
+						mv "$1" "$dirname/$newdir/" 2>/dev/null; true
+					else
+						echo "Missing sed pattern"
+						exit 1
+					fi
 				fi
 				;;
 		esac
 
 	else	# If input argument is not a file or directory
 		echo "No such file or directory $1"
+		exit 1
 	fi
 }
 
@@ -81,12 +100,7 @@ do
 		sed) s=y
 		     l=n
 		     u=n
-		     if test ! -z "$2"
-		     then
-			     pattern=$2
-		     else
-			     echo "Missing sed pattern."
-		     fi
+		     pattern=$2
 		     shift
 		     ;;
 		*)
@@ -144,6 +158,7 @@ do
 					fi
 				else	# if this is not a directory
 					echo "$1 is not a directory"
+					exit 1
 				fi
 			else	# change name of specified files and directory
 				if test $l = "y"

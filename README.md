@@ -1,6 +1,6 @@
 # Modify_Name_Shell_Programming
 
-# $name is script name
+$name is script name
 
 # usage:
     $name [-r] [-l|-u] <file/directory names>

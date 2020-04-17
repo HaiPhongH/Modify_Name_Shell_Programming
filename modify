@@ -15,34 +15,46 @@ change_name(){
 			l)	# change name to lowercase
 				if test -f $1		# if this is a file
 				then
-					newfile=$(echo "${basename%.*}" | tr '[:upper:]' '[:lower:]')		# change the filename into lowercase without changing extension
-					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true	# move to the new file ignore the output.
+					# change the filename into lowercase without changing extension
+					newfile=$(echo "${basename%.*}" | tr '[:upper:]' '[:lower:]')
+					# move to the new file ignore the output.
+					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true	
 				elif test -d $1		# if this is a directory
 				then
-					newdir=$(echo "$basename" | tr '[:upper:]' '[:lower:]')			# change the dirname into lowercase 
-					mv "$1" "$dirname/$newdir/" 2>/dev/null; true				# move to the new directory ignore the output.
+					# change the dirname into lowercase 
+					newdir=$(echo "$basename" | tr '[:upper:]' '[:lower:]')
+					# move to the new directory ignore the output.
+					mv "$1" "$dirname/$newdir/" 2>/dev/null; true
 				fi
 				;;
 			u)	# change name to uppercase
 				if test -f $1		# if this is a file
 				then
-					newfile=$(echo "${basename%.*}" | tr '[:lower:]' '[:upper:]')		# change the filename into uppercase without changing extension 
-					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true	# move to the new file ignore the output.
+					# change the filename into uppercase without changing extension 
+					newfile=$(echo "${basename%.*}" | tr '[:lower:]' '[:upper:]')
+					# move to the new file ignore the output.
+					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true
 				elif test -d $1		# if this is a directory
 				then
-					newdir=$(echo "$basename" | tr '[:lower:]' '[:upper:]')			# change the dirname into uppercase
-					mv "$1" "$dirname/$newdir/" 2>/dev/null; true				# move to the new directory ignore the output.
+					# change the dirname into uppercase
+					newdir=$(echo "$basename" | tr '[:lower:]' '[:upper:]')
+					# move to the new directory ignore the output.
+					mv "$1" "$dirname/$newdir/" 2>/dev/null; true
 				fi
 				;;
 			sed)	# change name with sed
 				if test -f $1		# if this is a file
 				then
-					newfile=$(echo "${basename%.*}" | sed $3)				# change the filename using given sed pattern stored in $3
-					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true	# move to the new file and ignore the output.
+					# change the filename using given sed pattern stored in $3
+					newfile=$(echo "${basename%.*}" | sed $3)
+					# move to the new file and ignore the output.
+					mv -- "$1" "$dirname/$newfile.${basename##*.}" 2>/dev/null; true	
 				elif test -d $1		# if this is a directory
 				then
-					newdir=$(echo "$basename" | sed $3)					# change the directory name using given sed pattern stored in $3
-					mv "$1" "$dirname/$newdir/" 2>/dev/null; true				# move to the newdirectory and ignore the output.
+					# change the directory name using given sed pattern stored in $3
+					newdir=$(echo "$basename" | sed $3)
+					# move to the newdirectory and ignore the output.
+					mv "$1" "$dirname/$newdir/" 2>/dev/null; true
 				fi
 				;;
 		esac
@@ -85,15 +97,18 @@ do
 					# firstly, find and change the current directory name and all the subdirectory
 					# secondly, find and change all the file name in this current directory
 					
-					listdir=`find $1 -depth -type d -name "*"`	# find current directory and all its subdirectories
+					# find current directory and all its subdirectories
+					listdir=`find $1 -depth -type d -name "*"`	
 					if test $l = "y"	# in case changing to lowercase
 					then
 						for ld in $listdir	# loop over all directories
 						do
 							change_name "$ld" "l"	# change the name to lowercase
 						done
-						newdir=$(echo "$1" | tr '[:upper:]' '[:lower:]')	# find the new directory name after changing
-						listfile=`find $newdir -depth -type f -name "*"`	# find all the files in current directory
+						# find the new directory name after changing
+						newdir=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+						# find all the files in current directory
+						listfile=`find $newdir -depth -type f -name "*"`
 						for lf in $listfile	# loop over all files
 						do
 							change_name "$lf" "l"	# change the name to lowercase
@@ -104,8 +119,10 @@ do
 						do
 							change_name "$ld" "u"	# change the name to uppercase
 						done
-						newdir=$(echo "$1" | tr '[:lower:]' '[:upper:]')	# find the new directory name after changing
-						listfile=`find $newdir -depth -type f -name "*"`	# find all the files in current directory
+						# find the new directory name after changing
+						newdir=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+						# find all the files in current directory
+						listfile=`find $newdir -depth -type f -name "*"`	
 						for lf in $listfile	# loop over all files
 						do
 							change_name "$lf" "u"	# change the name to uppercase
@@ -116,8 +133,10 @@ do
 						do
 							change_name "$ld" "sed" "$pattern"	# change the name using sed pattern
 						done
-						newdir=$(echo "$1" | sed $pattern)			# find the new directory name after changing
-						listfile=`find $newdir -depth -type f -name "*"`	# find all the files in current directory
+						# find the new directory name after changing
+						newdir=$(echo "$1" | sed $pattern)
+						# find all the files in current directory
+						listfile=`find $newdir -depth -type f -name "*"`
 						for lf in $listfile	# loop over all files
 						do
 							change_name "$lf" "sed" "$pattern"	# change the name using sed pattern
